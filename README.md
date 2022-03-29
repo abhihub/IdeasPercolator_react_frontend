@@ -1,3 +1,11 @@
+# Motivation - Learn react and work on a simple way of tracking an idea/thesis' maturity
+Write ideas and percolate them to maturity by adding context
+
+Created simple list management system for ideas. Underlying goal and thesis: Ideas are immature at birth. Give them more context over time by rethinking about them, sharing with other, finding sources to back up the idea and updating them with new learnings.
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
