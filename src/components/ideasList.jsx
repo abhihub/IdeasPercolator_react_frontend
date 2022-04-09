@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { useContext } from 'react';
 import Idea from './idea';
 import ListContext from './ideasContext';
+import axios from "axios";
 
 function IdeasList() {
   const styles = { fontSize: 20 };
@@ -9,9 +10,20 @@ function IdeasList() {
   console.log({...contextListItems});
   const [autoSaveState, setAutoSaveState] = useState({saveOnOff: false, value: '' });
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await axios.get("http://127.0.0.1:8000/ideas");
+      const ideasListJson = await response.data;
+      setContextListItems(ideasListJson);
+    }
+    fetchData().catch(console.error);;
+  }, [])
+
   const handleDelete = (idListItem) => {
     const newIdeasList = contextListItems.filter(i => i.id !== idListItem);
     setContextListItems(newIdeasList);
+    const deletedIdea = contextListItems.find(i => i.id === idListItem);
+    axios.delete("http://127.0.0.1:8000/idea/"+deletedIdea.id, deletedIdea);
   }
   
   const newLocal = function (a, b) {
@@ -19,18 +31,19 @@ function IdeasList() {
   };
   
   const handleIncrement = (listItem) => {
-    console.log(listItem);
-    console.log(contextListItems);
     if(listItem.maturityLevel<=9)
     {
     const newIdeasList = contextListItems;
     const index = newIdeasList.indexOf(listItem);
     newIdeasList[index] = { ...listItem };
-    newIdeasList[index].maturityLevel = newIdeasList[index].maturityLevel+1;
+    console.log(newIdeasList[index].maturityLevel+1);
+    newIdeasList[index].maturityLevel = parseInt(newIdeasList[index].maturityLevel)+1;
     newIdeasList.sort(newLocal);
+    setContextListItems(newIdeasList);
+    //Send update to backend. Optimistic update. 
+    axios.put("http://127.0.0.1:8000/idea", newIdeasList[index]);
     setAutoSaveState({saveOnOff: true, value: 'Saved: Increment'+ newIdeasList[index].maturityLevel });
     clearSaveState();
-    setContextListItems(newIdeasList);
     }
   }
 
@@ -40,11 +53,13 @@ function IdeasList() {
     const newIdeasList = contextListItems;
     const index = newIdeasList.indexOf(listItem);
     newIdeasList[index] = { ...listItem };
-    newIdeasList[index].maturityLevel = newIdeasList[index].maturityLevel-1;
+    newIdeasList[index].maturityLevel = parseInt(newIdeasList[index].maturityLevel)-1;
     newIdeasList.sort(newLocal);
+    //Send update to backend. Optimistic update. 
+    axios.put("http://127.0.0.1:8000/idea", newIdeasList[index]);
+    setContextListItems(newIdeasList);
     setAutoSaveState({saveOnOff: true, value: 'Saved: Decrement'+ newIdeasList[index].maturityLevel });
     clearSaveState();
-    setContextListItems(newIdeasList);
     }
   }
 
@@ -67,6 +82,9 @@ function IdeasList() {
       newIdeasList[index] = { ...myItem };
       newIdeasList[index].value = e.target.value;
       setContextListItems(newIdeasList);
+      console.log(newIdeasList[index]);
+      //Send update to backend. Optimistic update. 
+      axios.put("http://127.0.0.1:8000/idea", newIdeasList[index]);
       setAutoSaveState({saveOnOff: true, value: 'Saved: '+ newIdeasList[index].value });
       clearSaveState();
     }

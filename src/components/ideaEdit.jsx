@@ -29,19 +29,19 @@ function IdeaEdit(props) {
                 <h1>{editableIdea.value + ': ' + ideaIndex.id}</h1>
             </div>
             <div className="form-group">
-                <label for="exampleInputEmail1">Idea summary</label>
+                <label htmlFor="exampleInputEmail1">Idea summary</label>
                 <input type="text" className="form-control" id="exampleInputEmail1" placeholder="Enter email" defaultValue={editableIdea.value} />
             </div>
             <div className="form-group">
-                <label for="exampleInput2">Maturity level of idea</label>
+                <label htmlFor="exampleInput2">Maturity level of idea</label>
                 <input type="text" className="form-control" id="exampleInput2" placeholder="Enter maturity level" defaultValue={editableIdea.maturityLevel} />
             </div>
             <div className="form-group">
-                <label for="exampleInput3">Maturity level of idea</label>
+                <label htmlFor="exampleInput3">Maturity level of idea</label>
                 <input type="text" className="form-control" id="exampleInput3" placeholder="Enter Tags" defaultValue={editableIdea.tags} />
             </div>
             <div className="form-group">
-                <label for="exampleInput4">Enter Context and validating proof of idea</label>
+                <label htmlFor="exampleInput4">Enter Context and validating proof of idea</label>
                 <textarea type="textarea" className="form-control" id="exampleInput4" placeholder="Enter Context and validating proof of idea" defaultValue={editableIdea.FullText} />
             </div>
             <button type="submit" className="btn btn-primary">Submit</button>
