@@ -65,10 +65,14 @@ function IdeasList() {
 
   const handleNewAddition = () => {
     const newIdeasList = contextListItems;
-    console.log(contextListItems.length);
-    const newIdea =  {id: contextListItems.length+1, value: " ", maturityLevel: 1, tags:['Product']};
+    const newIdea =  {id: contextListItems.length+1, value: " ", maturityLevel: 1, tags:'Product', "FullText": " "};
+    const newIdeaJson =  JSON.stringify({value: " ", maturityLevel: "1", tags:'Product', FullText: " "});
     newIdeasList.push(newIdea);
-    console.log(newIdeasList);
+    axios.post("http://127.0.0.1:8000/idea", newIdeaJson, {
+      headers: {
+        // Overwrite Axios's automatically set Content-Type
+        'Content-Type': 'application/json'
+      }});
     setContextListItems(newIdeasList);
     setAutoSaveState({saveOnOff: true, value: 'Saved: New Item'});
     clearSaveState();
